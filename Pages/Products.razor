@@ -1,0 +1,55 @@
+﻿@page "/products"
+@using CrudAppBlazor.Data
+@inject ProductService proservice
+
+<NavLink class="nav-link" href="AddProduct">
+    <span class="oi oi-plus" aria-hidden="true"></span> Add New
+</NavLink>
+
+<h1>Product Info</h1>
+@if (ListProduct == null)
+{
+    <p><em> Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Unit Price</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in ListProduct)
+            {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.ProductCategory</td>
+                    <td>@item.UnitPrice</td>
+                    <td>
+                        <a class="nav-link" href="EditProduct/@item.ProductId">
+                            <span aria-hidden="true"> </span>Edit
+                        </a>
+                        <a class="nav-link" href="DeleteProduct/@item.ProductId">
+                            <span aria-hidden="true"> </span>Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+
+    List<ProductInfo> ListProduct;
+    protected override async Task OnInitializedAsync()
+    {
+        ListProduct = await Task.Run(() => proservice.GetProducts());
+    }
+}

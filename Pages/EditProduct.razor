@@ -1,0 +1,62 @@
+﻿@page "/EditProduct/{CurrentID}"
+@using CrudAppBlazor.Data
+@inject ProductService proservice
+@inject NavigationManager NavMan
+
+<h2> Update Product</h2>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+
+                <input for="Name" class="form-control" @bind="@prod.ProductId" />
+            </div>
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input form="Name" class="form-control" @bind="@prod.ProductName" />
+            </div>
+            <div class="form-group">
+                <label for="Name" class="control-label">Category</label>
+                <input form="Name" class="form-control" @bind="@prod.ProductCategory" />
+            </div>
+            <div class="form-group">
+                <label for="Name" class="control-label">Unit PRice</label>
+                <input form="Name" class="form-control" @bind="@prod.UnitPrice" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+
+                <input type="button" class="btn-primary" @onclick="@UpdateProduct" value="Update" />
+                <input type="button" class="btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string CurrentID { get; set; }
+    ProductInfo prod = new ProductInfo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        prod = await Task.Run(() => proservice.GetProduct(Convert.ToInt32(CurrentID)));
+    }
+
+
+    protected void UpdateProduct()
+    {
+        proservice.UpdateProduct(prod);
+        NavMan.NavigateTo("Products");
+    }
+    void Cancel()
+    {
+        NavMan.NavigateTo("Products");
+    }
+
+}

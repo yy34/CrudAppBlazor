@@ -1,0 +1,49 @@
+﻿@page "/AddProduct"
+@using CrudAppBlazor.Data
+@inject ProductService proservice
+@inject NavigationManager NavMan
+
+<h2> Add Product</h2>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input form="Name" class="form-control" @bind="@prod.ProductName" />
+            </div>
+            <div class="form-group">
+                <label for="Name" class="control-label">Category</label>
+                <input form="Name" class="form-control" @bind="@prod.ProductCategory" />
+            </div>
+            <div class="form-group">
+                <label for="Name" class="control-label">Unit PRice</label>
+                <input form="Name" class="form-control" @bind="@prod.UnitPrice" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn-primary" @onclick="@CreateProduct" value="Save" />
+                <input type="button" class="btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+
+    ProductInfo prod = new ProductInfo();
+    protected void CreateProduct()
+    {
+        proservice.Add(prod);
+        NavMan.NavigateTo("Products");
+    }
+    void Cancel()
+    {
+        NavMan.NavigateTo("Products");
+    }
+
+}

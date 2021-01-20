@@ -1,0 +1,39 @@
+﻿@page "/DeleteProduct/{CurrentID}"
+@using CrudAppBlazor.Data
+@inject ProductService proservice
+@inject NavigationManager NavMan
+
+<h2> Delete Product</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+
+            <input type="button" class="btn-danger" @onclick="@Delete" value="Delete" />
+            <input type="button" class="btn-primary" @onclick="@Cancel" value="Cancel" />
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string CurrentID { get; set; }
+    ProductInfo prod = new ProductInfo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        prod = await Task.Run(() => proservice.GetProduct(Convert.ToInt32(CurrentID)));
+    }
+
+
+    protected void Delete()
+    {
+        proservice.DeleteProduct(prod);
+        NavMan.NavigateTo("Products");
+    }
+    void Cancel()
+    {
+        NavMan.NavigateTo("Products");
+    }
+}
